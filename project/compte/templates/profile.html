@@ -1,0 +1,35 @@
+{% include 'app/base.html' %}
+{% load static %}
+
+{% block content %}
+<main class="main-content mt-5 pt-5 mb-5 pb-5 container d-flex align-items-center justify-content-center">
+  <div class="card shadow border-1 p-3 rounded text-center gap-2 d-flex align-items-center justify-content-center w-50">
+    <div class="card-body w-75">
+      <h2 class="text-center mb-3">Profil</h1>
+      <form action="">
+        <div class="mb-3 p-2 d-flex flex-column align-items-center justify-content-center">
+          <label for="firstName">Nom</label>
+          <input class="w-100 text-center" id="firstName" readonly type="text" value="{{ user.first_name }}">
+        </div>
+        <div class="mb-3 p-2 d-flex flex-column align-items-center justify-content-center">
+          <label for="lastName">Prénom</label>
+          <input class="w-100 text-center" id="lastName" readonly type="text" value="{{ user.last_name }}">
+        </div>
+        <div class="mb-3 p-2 d-flex flex-column align-items-center justify-content-center">
+          <label for="pseudo">Pseudo</label>
+          <input class="w-100 text-center" id="pseudo" name="pseudo" readonly type="text" value="{{ user.username }}">
+        </div>
+        <div class="mb-3 p-2 d-flex flex-column align-items-center justify-content-center">
+          <label for="email">Adresse mail</label>
+          <input class="w-100 text-center" id="email" name="email" readonly type="text" value="{{ user.email }}">
+        </div>
+        <div class="mb-3 p-2 d-flex flex-column align-items-center justify-content-center">
+          <label for="dateCreation">Date d'ouverture du compte</label>
+          <input class="w-100 text-center" id="dateCreation" name="dateCreation" readonly type="text" value="{{ user.date_joined }}">
+        </div>
+        
+      </form>
+    </div>
+  </div>
+</main>
+{% endblock %}

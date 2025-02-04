@@ -1,0 +1,33 @@
+{% load static %}
+<header>
+  <nav id="nav" class="navbar fixed-top navbar-expand-lg navbar-dark">
+    <div class="container-fluid">
+      <img src="{% static '/ressources/icon/smart-traffic-logo.png' %}" width="35" alt=""
+        class="d-inline-block align-text-top me-2" />
+      <a href="#" class="navbar-brand">Smart Traffic</a>
+
+      <div class="d-lg-flex justify-content-center align-items-center flex-grow-1">
+        <ul class="navbar-nav flex-grow-1 flex-row align-items-center justify-content-between">
+          <div class="mx-2 d-flex flex-row gap-3">
+            <li class="nav-item">
+              <a href="/" class="nav-link">
+                Accueil
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="/contact/" class="nav-link">
+                Contact
+              </a>
+            </li>
+          </div>
+
+          <li class="nav-item">
+            <a href="/login/" class="nav-link">
+              Connexion
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</header>

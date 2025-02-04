@@ -1,0 +1,55 @@
+#map {
+  height: 50vh;
+  min-width: 100%;
+  border: 1px groove #000;
+}
+
+nav {
+  animation: gradientBG 15s ease infinite;
+  background: linear-gradient(
+    45deg,
+    #1a5276,
+    #003366,
+    #1a5276,
+    #1a5276,
+    #003366,
+    #1a5276
+  );
+}
+
+footer {
+  animation: gradientBG 15s ease infinite;
+  background: linear-gradient(
+    45deg,
+    #1a5276,
+    #003366,
+    #1a5276,
+    #1a5276,
+    #003366,
+    #1a5276
+  );
+}
+
+#cop26 {
+  background-color: #1a5276 !important;
+  transition: ease-in-out 0.5s  !important;
+}
+
+#cop26:hover {
+  background-color: #003366 !important;
+  transition: ease-in-out 0.5s  !important;
+}
+
+@keyframes gradientBG {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+

@@ -1,0 +1,126 @@
+{% extends 'compte/base.html' %}
+{% load static %}
+{% block title %}
+Smart Traffic
+{% endblock %}
+
+{% block javascript %}
+<script type="text/javascript">
+    window.onload = function () {
+        const year = document.getElementById('annee');
+        const month = document.getElementById('mois');
+        const day = document.getElementById('jour');
+        const hour = document.getElementById('heure');
+        const minute = document.getElementById('minute');
+        const second = document.getElementById('seconde');
+
+        const currentYear = new Date().getFullYear();
+        const countDownDate = new Date('Nov 30, 2026 00:00:00');
+
+        function updateCountdowntime() {
+            const currentTime = new Date();
+            const diff = countDownDate - currentTime;
+
+            const y = Math.floor(diff / 1000 / 60 / 60 / 24 / 365);
+            const mon = Math.floor(diff / 1000 / 60 / 60 / 24 / 30) % 12;
+            const d = Math.floor(diff / 1000 / 60 / 60 / 24) % 30;
+            const h = Math.floor(diff / 1000 / 60 / 60) % 24;
+            const min = Math.floor(diff / 1000 / 60) % 60;
+            const s = Math.floor(diff / 1000) % 60;
+
+            year.innerHTML = y;
+            month.innerHTML = mon < 10 ? '0' + mon : mon;
+            day.innerHTML = d;
+            hour.innerHTML = h < 10 ? '0' + h : h;
+            minute.innerHTML = min < 10 ? '0' + min : min;
+            second.innerHTML = s < 10 ? '0' + s : s;
+        }
+
+        setInterval(updateCountdowntime, 500);
+
+    }
+</script>
+{% endblock %}
+
+{% block content %}
+<main class="main-content mt-5 pt-5 mb-5 pb-5 container d-flex align-items-center justify-content-center">
+    <div class="py-3 px-2 container-fluid">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-6">
+                    <div class="card shadow border-1 p-3 rounded text-center gap-2">
+                        <div class="p-3">
+                            <h3 class="text-center text-dark display-5 fw-bold m-3 p-3">Smart Traffic</h3>
+                            <div class="p-3">
+                                <p>Notre initiative ambitieuse en IA vise à optimiser le trafic dans les villes de
+                                    l'Essonne, avec un système de feux de circulation intelligents s'ajustant en direct
+                                    aux conditions routières🚦</p>
+                                <p>Ces feux, grâce à un modèle de détection de véhicules, améliorent ainsi l'efficacité
+                                    de la circulation, la sécurité et réduisent les temps d'attente 🛣️</p>
+                                <p>Cette approche novatrice ne se contente pas de fluidifier le trafic : elle diminue
+                                    aussi le temps d'arrêt des véhicules, réduisant leur impact environnemental par une
+                                    baisse significative de la consommation de carburant et des émissions 🍃</p>
+                                <!-- <p>Notre projet intègre également des actions de sensibilisation pour promouvoir des
+                                    transports plus verts, tels que le vélo, le covoiturage ou les transports en commun,
+                                    contribuant à une mobilité urbaine plus durable et responsable 🚴‍♂️🚎</p> -->
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="p-3">
+                            <div class="p-3">
+                                <h2 class="text-center">Présentation vidéo</h2>
+                                <div class="embed-responsive embed-responsive-16by9 p-3 h-100">
+                                    <!-- <iframe class="w-100 h-100 embed-responsive-item" src="C:\Users\chari\OneDrive\Desktop\KESKIA\MontoringSmartTraffic\v01.mp4" allowfullscreen></iframe> -->
+                                    <video class="w-100 h-100 embed-responsive-item" controls>
+                                        <source src="{% static '/ressources/v01.mp4' %}" type="video/mp4">
+                                        Your browser does not support the video tag.
+                                    </video>
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="container">
+                            <div class="row justify-content-center">
+                                <div class="col-4">
+                                    <div class="p-3 d-flex flex-column align-items-center justify-content-center">
+                                        <h2 class="text-center mb-4">Objectif COP26 </h2>
+                                        <div id="cop26" class="p-4 d-flex justify-content-center gap-4">
+                                            <div class="text-center">
+                                                <h4 class="text-center" id="annee">00</h4>
+                                                <small>Années</small>
+                                            </div>
+                                            <div class="text-center">
+                                                <h4 id="mois">00</h4>
+                                                <small>Mois</small>
+                                            </div>
+                                            <div class="text-center">
+                                                <h4 id="jour">00</h4>
+                                                <small>Jours</small>
+                                            </div>
+                                            <div class="text-center">
+                                                <h4 id="heure">00</h4>
+                                                <small>Heures</small>
+                                            </div>
+                                            <div class="text-center">
+                                                <h4 id="minute">00</h4>
+                                                <small>Minutes</small>
+                                            </div>
+                                            <div class="text-center">
+                                                <h4 id="seconde">00</h4>
+                                                <small>Secondes</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}
+
+{% include 'app/footer.html' %}

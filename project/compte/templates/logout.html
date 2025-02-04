@@ -1,0 +1,40 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.1/font/bootstrap-icons.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="{% static 'css/design.css' %}" />
+  <link rel="shortcut icon" href="{% static '/ressources/icon/smart-traffic-logo.png' %}" type="image/x-icon" />
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+  <title>Smart Traffic</title>
+</head>
+
+<body class="bg-light">
+  {% include 'compte/header_login.html' %}
+  <main class="main-content mt-5 pt-5 mb-5 pb-5 container d-flex align-items-center justify-content-center">
+    <div class="py-3 px-2 container-fluid mt-5">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-md-6">
+            <div class="card shadow border-1 p-3 rounded text-center">
+              <h2>Vous nous manquez déjà !</h2>
+              <p>À bientôt, sur les routes de l'Essonne...</p>
+              <a href="/login/">
+                <button class="btn btn-outline-primary px-3 py-2">Connexion</button>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  {% include 'compte/footer.html' %}
+</body>
+
+</html>
