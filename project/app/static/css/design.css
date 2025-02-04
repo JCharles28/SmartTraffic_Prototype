@@ -1,0 +1,48 @@
+
+#map {
+  height: 50vh;
+  min-width: 100%;
+  border: 1px groove #000;
+}
+
+nav {
+  animation: gradientBG 15s ease infinite;
+  background: linear-gradient(45deg,
+      #1a5276,
+      #003366,
+      #1a5276,
+      #1a5276,
+      #003366,
+      #1a5276);
+}
+
+footer {
+  animation: gradientBG 15s ease infinite;
+  background: linear-gradient(45deg,
+      #1a5276,
+      #003366,
+      #1a5276,
+      #1a5276,
+      #003366,
+      #1a5276);
+}
+
+.card-body canvas {
+  width: 100%;
+  height: 100%;
+}
+
+
+@keyframes gradientBG {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}

@@ -1,0 +1,151 @@
+{% include 'app/base.html' %}
+{% load static %}
+
+{% block javascript %}
+<!-- script de -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Turf.js/5.1.6/turf.min.js"></script>
+<script src="{% static 'javascript/leaflet-heat.js'%}"></script>
+<script src="http://leaflet.github.io/Leaflet.markercluster/example/realworld.10000.js"></script>
+<script type="text/javascript">
+  window.onload = function () {
+
+    // ----- data -----
+    let feux = JSON.parse("{{ feu|escapejs|safe }}");
+    let feux_nb_detections = JSON.parse("{{ nbDetection|escapejs|safe }}");
+
+    var map = L.map("map").setView([48.71536, 2.298221], 700);
+
+    L.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png", {
+      attribution: "©",
+      maxZoom: 18.499999,
+    }).addTo(map);
+
+
+    // Markers (feux)
+    var marker1 = L.marker([48.715701, 2.298238]).addTo(map);
+    var marker2 = L.marker([48.715294, 2.298024]).addTo(map);
+    var marker3 = L.marker([48.714974, 2.298427]).addTo(map);
+    var marker4 = L.marker([48.715270, 2.298771]).addTo(map);
+
+    marker1.bindPopup("<b>Feu n°1</b>").openPopup();
+    marker2.bindPopup("<b>Feu n°2</b>").openPopup();
+    marker3.bindPopup("<b>Feu n°3</b>").openPopup();
+    marker4.bindPopup("<b>Feu n°4</b>").openPopup();
+
+
+    L.circle([48.715295, 2.298321], 45, {
+      color: "#4287f5",
+      fillColor: "#37edef",
+      fillOpacity: 0.2,
+      stroke: true,
+      weight: 1.5,
+      opacity: 0.8,
+      lineCap: "round",
+      lineJoin: "bevel",
+      dashArray: "5, 5",
+      dashOffset: "0"
+    }).addTo(map);
+
+    var pointVoie1 = [
+        [48.715615, 2.298302],   
+        [48.715681, 2.298315]
+    ];
+
+    var pointVoie2 = [
+        [48.715359, 2.297975],   
+        [48.715393, 2.297836]
+    ];
+
+    var pointVoie3 = [
+        [48.715061, 2.298256],   
+        [48.714973, 2.298223]
+    ];
+
+    var pointVoie4 = [
+        [48.715193, 2.298632],   
+        [48.715136, 2.298745]
+    ];
+
+    var heatV1 = L.heatLayer(pointVoie1)
+    pointVoie1.forEach(function (coords, index) {
+      console.log("Marker " + (index + 1) + " coordinates (" + coords + ") are in the heatmap layer of Avenue 1 (Route de Massy).");
+    });
+
+    var heatV2 = L.heatLayer(pointVoie2)
+    pointVoie2.forEach(function (coords, index) {
+      console.log("Marker " + (index + 1) + " coordinates (" + coords + ") are in the heatmap layer of Avenue 2 (Route d'Orléans).");
+    });
+
+    var heatV3 = L.heatLayer(pointVoie3)
+    pointVoie3.forEach(function (coords, index) {
+      console.log("Marker " + (index + 1) + " coordinates (" + coords + ") are in the heatmap layer of Avenue 2 (Route d'Orléans).");
+    });
+
+    var heatV4 = L.heatLayer(pointVoie4)
+    pointVoie4.forEach(function (coords, index) {
+      console.log("Marker " + (index + 1) + " coordinates (" + coords + ") are in the heatmap layer of Avenue 2 (Route d'Orléans).");
+    });
+
+    // nombres de detections par feu
+    detections_feu_1 = feux_nb_detections[0];
+    detections_feu_2 = feux_nb_detections[1];
+    detections_feu_3 = feux_nb_detections[2];
+    detections_feu_4 = feux_nb_detections[3];
+
+    // conditions d'affichage des zones de chaleur
+
+    for (let i = 0; i < feux_nb_detections.length; i++) {
+      if (feux_nb_detections[i] > 0) {
+        if (i == 0) {
+          heatV1.addTo(map);
+        } else if (i == 1) {
+          heatV2.addTo(map);
+        } else if (i == 2) {
+          heatV3.addTo(map);
+        } else if (i == 3) {
+          heatV4.addTo(map);
+        }
+      }
+      else {
+        alert("Aucune détection pour le feu n°" + (i + 1) + " !");
+      }
+    }
+    
+    L.control.layers(
+  {}, // choix unique, ici on n'utilise pas
+  { 
+    // cases à cocher
+    // "Le nom affiché dans l'interface" : variable_du_groupe,
+    "Palmiers pixel" : pixelGroup, // ici un groupe
+    "Carte OSM" : carteOSM, // ici un tileLayer
+    "Palamier unique !" : markerPalm1, // ici un marqueur unique
+  },
+  { // les options du panel
+    position: "topright", // topleft', 'topright', 'bottomleft' or 'bottomright'
+    collapsed: false // fermé ou ouvert au démarrage (ici, ouvert au démarrage)
+  }
+).addTo(map); // on l'ajoute à la carte comme un marqueur
+
+  };
+
+</script>
+{% endblock %}
+
+{% block content %}
+<main class="main-content mt-5 pt-5 mb-5 pb-5 container d-flex align-items-center justify-content-center">
+  <div class="card shadow-sm border-1 p-3 rounded text-center gap-2 d-flex align-items-center justify-content-center">
+    <div class="row w-100 mt-4">
+      <h3 class="text-center text-dark display-5 fw-bold m-3 p-3">
+        Carte de l'emplacement du système🗺️
+      </h3>
+      <div class="col w-80">
+        <div class="border-1 shadow border-dark" id="map"></div>
+      </div>
+      <p class="p-3">
+        Voici le carrefour des Champarts, intersection de la N20 avec la RD120, limitrophe avec Massy.
+      </p>
+
+    </div>
+  </div>
+</main>
+{% endblock %}

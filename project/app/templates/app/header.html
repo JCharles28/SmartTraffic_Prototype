@@ -1,0 +1,55 @@
+{% load static %}
+<header>
+  <nav id="nav" class="navbar fixed-top navbar-expand-lg navbar-dark">
+    <div class="container-fluid justify-content-center align-items-center">
+      <img src="{% static '/ressources/icon/smart-traffic-logo.png' %}" width="35" alt=""
+        class="d-inline-block align-text-top me-2" />
+      <a href="#" class="navbar-brand display-1 text-center">
+        Smart Traffic
+      </a>
+
+      <div class="d-lg-flex justify-content-center align-items-center flex-grow-1">
+        <ul class="navbar-nav flex-grow-1 flex-row align-items-center justify-content-between">
+          <div class="mx-2 d-flex flex-row gap-3">
+            <li class="nav-item">
+              <a href="/" class="nav-link">
+                Accueil
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="/home/" class="nav-link">
+                Traffic
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="/carte/" class="nav-link">
+                Carte
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="/contact/" class="nav-link">
+                Contact
+              </a>
+          </div>
+
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
+                <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
+              </svg>
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <li>
+                <a class="dropdown-item" href="/profil/">Profil</a>
+              </li>
+              <li><hr class="dropdown-divider"></li>
+              <li>
+                <a class="dropdown-item text-danger" href="/logout/">Déconnexion</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</header>

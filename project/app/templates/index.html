@@ -1,0 +1,326 @@
+{% include 'app/base.html' %}
+{% load static %}
+
+{% block javascript %}
+<script type="text/javascript">
+  window.onload = function () {
+
+    // ----- data -----
+    let rues = JSON.parse("{{ rue|escapejs|safe }}");
+    let rues_nb_detections = JSON.parse("{{ nbDetection|escapejs|safe }}");
+
+    let types = JSON.parse("{{ typeVehicule|escapejs|safe }}");
+    let types_nb_detections = JSON.parse("{{ nbDetection2|escapejs|safe }}");
+
+    let heures_nb_detections = JSON.parse("{{ nbDetection3|escapejs|safe }}");
+    let heures = JSON.parse("{{ tabHeures|escapejs|safe }}");
+
+    let feux = JSON.parse("{{ feu|escapejs|safe }}");
+    let feux_nb_detections = JSON.parse("{{ nbDetection5|escapejs|safe }}");
+    
+    let rejetC02 = JSON.parse("{{ rejetC02|escapejs|safe }}");
+
+    let rejetC02partype = JSON.parse("{{ rejetC02partype|escapejs|safe }}");
+    
+
+
+    for (let h = 0; h < heures.length; h++) {
+      heures[h] = heures[h] + "h";
+    }
+    // ----- backgrounds colors -----
+    function getRandomColor() {
+      var r = Math.floor(Math.random() * 255);
+      var g = Math.floor(Math.random() * 255);
+      var b = Math.floor(Math.random() * 255);
+      return 'rgba(' + r + ', ' + g + ', ' + b + ', 0.2)';
+    }
+
+    let bC1 = rues_nb_detections.map(() => getRandomColor());
+    let bC2 = types_nb_detections.map(() => getRandomColor());
+    let bC4 = heures_nb_detections.map(() => getRandomColor());
+    let bC5 = feux_nb_detections.map(() => getRandomColor());
+    let bC6 = [getRandomColor()]
+    let bC7 = rejetC02partype.map(() => getRandomColor());
+
+    // ----- charts -----
+    let ctx1 = document.getElementById("canvas1").getContext("2d");
+    new Chart(ctx1, {
+      type: "bar",
+      data: {
+        labels: rues,
+        datasets: [
+          {
+            label: "Nombre de véhicules par rue",
+            backgroundColor: bC1,
+            borderColor: "#000",
+            borderWidth: .75,
+            data: rues_nb_detections,
+
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        title: {
+          display: true,
+          text: "Nombre de véhicules détectés par heure",
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            max: Math.max(...rues_nb_detections) * 2,
+          },
+        },
+      },
+    });
+
+    let canvas2 = document.getElementById("canvas2");
+    let ctx2 = canvas2.getContext("2d");
+    new Chart(ctx2, {
+      type: "doughnut",
+      data: {
+        labels: types,
+        datasets: [
+          {
+            label: "Nombre de véhicules par type",
+            data: types_nb_detections,
+            backgroundColor: bC2,
+            borderColor: "#000",
+            borderWidth: .75,
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        title: {
+          display: true,
+          text: "Nombre de véhicules détectés par heure",
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            max: Math.max(...types_nb_detections) * 2,
+          },
+        },
+      },
+    });
+
+    let ctx4 = document.getElementById("canvas4").getContext("2d");
+    new Chart(ctx4, {
+      type: "line",
+      data: {
+        labels: heures,
+        datasets: [
+          {
+            label: "Nombre de véhicules par heure",
+            backgroundColor: bC4,
+            borderColor: "#000",
+            borderWidth: .75,
+            data: heures_nb_detections,
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        title: {
+          display: true,
+          text: "Nombre de véhicules détectés par heure",
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            max: Math.max(...heures_nb_detections) * 2.5,
+          },
+        },
+        annotation: {
+          annotations: [{
+            type: 'line',
+            mode: 'horizontal',
+            scaleID: 'y',
+            value: '25', // valeur du seuil
+            borderColor: 'red',
+            borderWidth: 2,
+            label: {
+              enabled: true,
+              content: 'Seuil'
+            }
+          }]
+        }
+      },
+    });
+
+    let ctx5 = document.getElementById("canvas5").getContext("2d");
+    let labels = ["Aujourd'hui"];  // Add more labels if needed
+    let lineData = Array(labels.length).fill(2500);  // Create an array of 2500s with the same length as labels
+
+    let chart = new Chart(ctx5, {
+      data: {
+        datasets: [{
+          type: 'bar',
+          label: 'Rejet de C02 journalier (en g)',
+          backgroundColor: bC5,
+          data: [rejetC02],
+        }, {
+          type: 'line',
+          label: 'Limite de C02 journalière',
+          data: lineData,
+          fill: false,  // Don't fill the area under the line
+        }],
+        labels: labels
+      },
+      title: {
+        display: true,
+        text: "Rejet de C02",
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true,
+            max: Math.max(...[rejetC02], ...lineData) * 1.1,  // Set the max to 110% of the maximum data value
+          },
+        },
+        tooltips: {
+          enabled: true,  // Enable tooltips
+        },
+      }
+    });
+
+    let ctx6 = document.getElementById("canvas6").getContext("2d");
+    new Chart(ctx6, {
+      type: "bar",
+      data: {
+        labels: feux,
+        datasets: [
+          {
+            label: "Nombre de véhicules par feu",
+            backgroundColor: bC6,
+            borderColor: "#000",
+            borderWidth: .75,
+            data: feux_nb_detections,
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        title: {
+          display: true,
+          text: "Nombre de véhicules détectés par feu",
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            max: Math.max(...feux_nb_detections) * 2,
+          },
+        },
+      },
+    });
+
+    let data = chart.data.datasets[0].data;
+    for (let i = 0; i < data.length; i++) {
+      if (data[i] > lineData[0]) {
+          chart.data.datasets[0].backgroundColor[i] = '#000';
+          alert("Attention, une valeur est supérieure à 50");
+
+          // Make AJAX request to Django view
+          fetch('/send_email/', {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json',
+                  'X-CSRFToken': csrftoken  // You'll need to get the CSRF token
+              },
+              body: JSON.stringify({value: data[i]})
+          });
+      }
+    }
+
+    let ctx7 = document.getElementById("canvas7").getContext("2d");
+    new Chart(ctx7, {
+      type: "bar",
+      data: {
+        labels: types,
+        datasets: [
+          {
+            label: "Rejet de C02 par type de véhicule (en g)",
+            backgroundColor: bC7,
+            borderColor: "#000",
+            borderWidth: .75,
+            data: rejetC02partype,
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        title: {
+          display: true,
+          text: "Nombre de véhicules détectés par feu",
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            max: Math.max(...rejetC02partype) * 2,
+          },
+        },
+      },
+    });
+  };
+
+</script>
+{% endblock %}
+
+{% block content %}
+<div class="py-3 px-2 container-fluid">
+  <div class="mt-5 mb-3 rounded shadow border-1">
+    <h3 class="text-center text-dark display-4 fw-bold m-3 p-3">Traffic🚦</h3>
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-1">
+      <div class="p-5 d-flex align-items-center justify-content-center">
+        <div class="card border-1 shadow border-dark">
+          <div class="card-body">
+            <canvas id="canvas1" width="300" height="300"></canvas>
+          </div>
+        </div>
+      </div>
+      <div class="p-5 d-flex align-items-center justify-content-center">
+        <div class="card border-1 shadow border-dark">
+          <div class="card-body">
+            <canvas id="canvas6" width="300" height="300"></canvas>
+          </div>
+        </div>
+      </div>
+      <div class="p-5 d-flex align-items-center justify-content-center">
+        <div class="card border-1 shadow border-dark">
+          <div class="card-body">
+            <canvas id="canvas2" width="300" height="300"></canvas>
+          </div>
+        </div>
+      </div>
+      <div class="p-5 d-flex align-items-center justify-content-center">
+        <div class="card border-1 shadow border-dark">
+          <div class="card-body">
+            <canvas id="canvas4" width="300" height="300"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="mt-5 mb-3 rounded border-3 shadow-lg">
+    <h3 class="text-center text-dark display-4 fw-bold m-3 p-3">Environnement🌍</h3>
+    <div class=" row row-cols-1 row-cols-md-2 row-cols-lg-3 g-1"> 
+      <div class="p-5 d-flex align-items-center justify-content-center">
+        <div class="card border-1 shadow border-dark">
+          <div class="card-body">
+            <canvas id="canvas5" width="300" height="300"></canvas>
+          </div>
+        </div>
+      </div>
+      <div class="p-5 d-flex align-items-center justify-content-center">
+        <div class="card border-1 shadow border-dark">
+          <div class="card-body">
+            <canvas id="canvas7" width="300" height="300"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
